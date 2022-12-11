@@ -1,5 +1,6 @@
 <script>
 import {inject} from "vue";
+import {useLSWatcher} from "next-vue-storage-watcher";
 
 export default {
     name: "blokCviceni",
@@ -8,6 +9,7 @@ export default {
     },
     data() {
         return {
+            ls: useLSWatcher(),
         }
     },
     methods: {
@@ -30,8 +32,8 @@ export default {
 <template>
     <div class="cviceniBlok">
         <h3>
-            <router-link v-if="true" :to="'/cvic/' + cviceni">Pismena: {{ formatovany_pismena }}</router-link>
-            <a v-else @click="prihlaste_se">Pismena: {{ formatovany_pismena }}</a>
+            <router-link v-if="this.ls.getItem('token').value" :to="'/cvic/' + cviceni">Lekce: {{ formatovany_pismena }}</router-link>
+            <a v-else @click="prihlaste_se">Lekce: {{ formatovany_pismena }}</a>
         </h3>
     </div>
 </template>

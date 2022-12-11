@@ -46,11 +46,16 @@ async def getLekce():
 @app.get("/cvic/{pismena}", dependencies=[Depends(JWTBearer())])
 async def getText(pismena):
     if pismena in dict(get_lekce()).values():
+        if True:
+            return {'text': ["Kokosák ", "Vyšukanej ", "Děvka ", "No"], 'pismena': pismena}
+
+        delka = 8  # 4 pro jedno slovo
         text = []
         slovo = ""
-        for i in range(20):
+        for i in range(delka + 1):
+            print(i)
             if i % 4 == 0 and i != 0:
-                slovo += " "
+                if i != delka: slovo += " "  # na konci nechci mezeru
                 text.append(slovo)
                 slovo = ""
             slovo += pismena[rnd.randint(0, len(pismena) - 1)]
