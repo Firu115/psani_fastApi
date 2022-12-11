@@ -1,0 +1,26 @@
+{
+  "name": "frontend",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@gapi/auth": "^1.8.134",
+    "axios": "^1.2.0",
+    "next-vue-storage-watcher": "^0.0.7",
+    "pinia": "^2.0.27",
+    "vue": "^3.2.45",
+    "vue-gapi": "^2.1.2",
+    "vue-jwt-decode": "^0.1.0",
+    "vue-router": "^4.1.6",
+    "vue3-google-oauth2": "^1.0.6",
+    "vue3-google-signin": "^1.2.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^3.2.0",
+    "vite": "^3.2.4"
+  }
+}

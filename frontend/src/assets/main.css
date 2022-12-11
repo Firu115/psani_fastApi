@@ -1,0 +1,50 @@
+:root {
+    --cerna: #0E0B16;
+    --modra: rgb(71, 23, 246);
+    --bila: #FFFFFF;
+    --tmavsi-modra: #3312a9;
+    --pruhledna: rgba(123, 86, 255, 0.223);
+    --sirka-menu: 230px;
+}
+
+@font-face {
+    font-family: "Montserrat Thin";
+    src: url('@/assets/Montserrat-VariableFont_wght.ttf');
+    font-weight: 100 300;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat Thin", sans-serif;
+}
+
+body::-webkit-scrollbar {
+    width: 0;
+}
+
+html {
+    height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    color: var(--bila);
+    background-image: url('@/assets/pozadi.png');
+    background-size: 500%;
+    background-position-x: -500px;
+    background-repeat: repeat;
+    background-color: var(--cerna);
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100vw;
+    justify-content: space-evenly;
+}
+
+.pruhledne {
+    background-color: var(--pruhledna);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}

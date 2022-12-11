@@ -1,0 +1,3 @@
+vue: npm run dev
+
+fastAPI: uvicorn main:app --reload
