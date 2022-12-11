@@ -46,10 +46,7 @@ async def getLekce():
 @app.get("/cvic/{pismena}", dependencies=[Depends(JWTBearer())])
 async def getText(pismena):
     if pismena in dict(get_lekce()).values():
-        if True:
-            return {'text': ["Kokosák ", "Vyšukanej ", "Děvka ", "No"], 'pismena': pismena}
-
-        delka = 8  # 4 pro jedno slovo
+        delka = 140  # 4 pro jedno slovo
         text = []
         slovo = ""
         for i in range(delka + 1):

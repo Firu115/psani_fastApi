@@ -15,7 +15,6 @@ export default {
             counter: 0,     //         0             1                2
             list_textu: {}, // {str pismeno, bool aktivni, bool je/bylo_spatne}
             timer_zacatek: null,
-            preklepy: 0,
         }
     },
     computed: {
@@ -24,6 +23,14 @@ export default {
         },
         progress() {
             return Math.floor(((this.counter) / Object.keys(this.list_textu).length) * 100)
+        },
+        preklepy() {
+
+            let pocet = 0
+            for (const [key, value] of Object.entries(this.list_textu)) {
+                if (value[2]) pocet++
+            }
+            return pocet
         }
     },
     mounted() {
@@ -94,7 +101,8 @@ export default {
     <div v-if="!info.error">
 
         <div id="cviceniNabidka">
-            <h2 id="cas">Čas {{ cas_format }}s</h2>
+            <h2 id="cas">Čas: {{ cas_format }}s</h2>
+            <h2 id="preklepy">Překlepy: {{ preklepy }}</h2>
             <h2 id="CapsLock"></h2>
         </div>
         <div id="pozadi_ramecku">
@@ -113,7 +121,9 @@ export default {
                     </div>
                 </div>
             </div>
-            <div :style="'width:' + progress + '%; border-bottom-right-radius:' + (progress === 100 ? '10px':'0')" id="progress_bar">Postup:&nbsp{{ progress }}%</div>
+            <div :style="'width:' + progress + '%; border-bottom-right-radius:' + (progress === 100 ? '10px':'0')"
+                 id="progress_bar">Postup:&nbsp{{ progress }}%
+            </div>
         </div>
     </div>
     <p v-else>{{ info.error }}</p>
@@ -127,7 +137,6 @@ export default {
 #text {
     display: flex;
     flex-wrap: wrap;
-    line-height: normal;
 }
 
 .slovo {
@@ -140,9 +149,11 @@ export default {
     display: inline-flex;
     font-family: Menlo, Monaco, Consolas, Courier New, monospace;
     font-size: 25px;
-    line-height: 1.5;
+    line-height: 1.2;
     text-decoration: none;
-    padding-left: 2px;
+    padding: 0 1px;
+    margin-right: 1px;
+    border-bottom: 3px solid rgba(255, 255, 255, 0); /* aby se nedojebala vyska liny když jdu na dalsi radek*/
 }
 
 #ramecek {
@@ -160,19 +171,15 @@ export default {
 
 #progress_bar {
     height: 20px;
-    background-color: red;
+    background-color: rgba(101, 60, 253, 0.5);
     width: 0;
     border-bottom-left-radius: 10px;
     transition: ease 0.5s;
 }
 
-#progress {
-
-}
-
 .podtrzenePismeno {
     border-bottom: 3px solid var(--bila);
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .spatnePismeno {
