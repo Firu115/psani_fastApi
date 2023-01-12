@@ -1,20 +1,23 @@
 <script>
-import blokCviceni from "@/components/BlokCviceni.vue";
 import axios from "axios";
 import {useLSWatcher} from "next-vue-storage-watcher";
+import Klavesnice from "@/components/Klavesnice.vue";
 
 export default {
     name: "cviceni",
+    components: {Klavesnice},
     data() {
         return {
             info: {},
             text: String,
             cas: [0, 0],
             pismena: this.$route["params"].pismena,
+            cislo: this.$route["params"].id,
             ls: useLSWatcher(),
             counter: 0,     //         0             1                2
             list_textu: {}, // {str pismeno, bool aktivni, bool je/bylo_spatne}
             timer_zacatek: null,
+            capslock: false
         }
     },
     computed: {
@@ -31,11 +34,18 @@ export default {
                 if (value[2]) pocet++
             }
             return pocet
+        },
+        formatovany_pismena() {
+            let vratit = "";
+            for (let i = 0; i < this.pismena.length; i++) {
+                vratit += i < this.pismena.length - 1 ? this.pismena.at(i) + ", " : this.pismena.at(i);
+            }
+            return vratit;
         }
     },
     mounted() {
         axios
-            .get('cvic/' + this.pismena, {
+            .get('api/cvic/' + this.pismena + '/' + this.cislo, {
                 headers: {
                     Authorization: 'Bearer ' + this.ls.getItem('token').value
                 }
@@ -54,11 +64,12 @@ export default {
         document.addEventListener("keydown", this.klik);
     },
     unmounted() {
-        document.removeEventListener("keydown", this.klik)
+        document.removeEventListener("keydown", this.klik);
     },
     methods: {
         klik(e) {
             if (["Shift"].includes(e.key)) return
+            this.capslock = e.getModifierState('CapsLock')
             if (!this.timer_zacatek) {
                 this.timer_zacatek = new Date().getTime();
                 setInterval(() => {
@@ -71,6 +82,7 @@ export default {
             }
             if (e.key === this.list_textu[this.counter][0]) {
                 if (this.counter === this.list_textu.length - 1) {
+                    console.log("sui")
                     //presmerovat
                     //window.location.href = "/update/" + cas + "/" + preklepy + "/" + (((delkaTextu - preklepy) / delkaTextu * 100).toFixed(1)).toString() + "/" + (kliknuti / (cas / 60)).toFixed(1).toString();
                 }
@@ -96,14 +108,14 @@ export default {
 </script>
 
 <template>
-    <h1>Lekce: {{ pismena }}</h1>
+    <h1>Lekce: {{ formatovany_pismena }}</h1>
 
     <div v-if="!info.error">
 
         <div id="cviceniNabidka">
-            <h2 id="cas">Čas: {{ cas_format }}s</h2>
-            <h2 id="preklepy">Překlepy: {{ preklepy }}</h2>
-            <h2 id="CapsLock"></h2>
+            <h3 id="cas">{{ cas_format }}s</h3>
+            <h3 :style="{visibility: capslock  ? 'visible' : 'hidden'}" id="capslock">CapsLock</h3>
+            <h3 id="preklepy">Chyby: {{ preklepy }}</h3>
         </div>
         <div id="pozadi_ramecku">
             <div id="ramecek">
@@ -113,7 +125,8 @@ export default {
                             <p class="pismeno"
                                :class="{podtrzenePismeno: this.list_textu[get_index_pismena(i,j)][1],
                                     spatnePismeno: this.list_textu[get_index_pismena(i,j)][2] && this.counter <= (get_index_pismena(i,j)),
-                                    opravenePismeno: this.list_textu[get_index_pismena(i,j)][2] && this.counter > (get_index_pismena(i,j))}"
+                                    opravenePismeno: this.list_textu[get_index_pismena(i,j)][2] && this.counter > (get_index_pismena(i,j)),
+                                    pismenoCoBylo: this.counter > (get_index_pismena(i,j))}"
                                :id="'p' + (i * slovo.length + j)">{{
                                     (pismeno !== ' ' ? pismeno : "&nbsp")
                                 }}</p>
@@ -122,21 +135,44 @@ export default {
                 </div>
             </div>
             <div :style="'width:' + progress + '%; border-bottom-right-radius:' + (progress === 100 ? '10px':'0')"
-                 id="progress_bar">Postup:&nbsp{{ progress }}%
+                 id="progress_bar">&nbsp{{ progress }}%&nbsp
             </div>
         </div>
+        <Klavesnice :counter="this.counter" :text="this.list_textu"></Klavesnice>
+
     </div>
     <p v-else>{{ info.error }}</p>
+
 </template>
 
 <style>
 #cviceniNabidka {
-    margin-bottom: 20px;
+    margin: 20px 0 6px 0;
 }
 
 #text {
     display: flex;
     flex-wrap: wrap;
+}
+
+#cas {
+    float: left;
+    width: 150px;
+    display: inline-block;
+    text-align: left;
+}
+
+#preklepy {
+    float: right;
+    display: inline-block;
+    width: 150px;
+    text-align: right;
+}
+
+#capslock {
+    display: inline-block;
+    color: var(--cervena);
+    font-weight: bold;
 }
 
 .slovo {
@@ -154,12 +190,19 @@ export default {
     padding: 0 1px;
     margin-right: 1px;
     border-bottom: 3px solid rgba(255, 255, 255, 0); /* aby se nedojebala vyska liny když jdu na dalsi radek*/
+    color: grey;
+}
+
+.pismenoCoBylo {
+    color: white;
 }
 
 #ramecek {
     padding: 10px 10px 0 10px;
-    width: 650px;
-    height: 200px;
+    min-height: 190px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
 }
 
 #pozadi_ramecku {
@@ -175,6 +218,7 @@ export default {
     width: 0;
     border-bottom-left-radius: 10px;
     transition: ease 0.5s;
+    text-align: right;
 }
 
 .podtrzenePismeno {
@@ -183,11 +227,11 @@ export default {
 }
 
 .spatnePismeno {
-    background-color: red;
+    background-color: var(--cervena);
     border-radius: 3px 3px 0px 0px;
 }
 
 .opravenePismeno {
-    background-color: gray;
+    background-color: rgba(128, 128, 128, 0.60);
 }
 </style>

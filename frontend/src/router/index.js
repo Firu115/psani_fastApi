@@ -19,11 +19,16 @@ const router = createRouter({
         },
         {
             path: '/lekce',
+            name: 'VsechnyLekce',
+            component: () => import('../views/VsechnyLekce.vue')
+        },
+        {
+            path: '/lekce/:pismena',
             name: 'lekce',
             component: () => import('../views/LekceView.vue')
         },
         {
-            path: '/cvic/:pismena',
+            path: '/lekce/:pismena/:id',
             name: 'cviceni',
             component: () => import('../views/CviceniView.vue')
         },

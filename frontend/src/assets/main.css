@@ -3,22 +3,27 @@
     --modra: rgb(71, 23, 246);
     --bila: #FFFFFF;
     --tmavsi-modra: #3312a9;
-    --pruhledna: rgba(101, 60, 253, 0.22);
+    --pruhledna: rgba(91, 50, 255, 0.22);
+    --mene-pruhledna: rgba(109, 76, 255, 0.44);
     --sirka-menu: 230px;
+    --cervena: rgba(255, 0, 0, 0.70);
 }
 
 @font-face {
-    font-family: "Montserrat Thin";
+    font-family: "Montserrat";
     src: url('@/assets/Montserrat-VariableFont_wght.ttf');
-    font-weight: 100 300;
-    font-style: normal;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Montserrat Thin", sans-serif;
+    font-family: "Montserrat", sans-serif;
+    font-weight: 300;
+}
+
+h1 {
+    font-weight: 400;
 }
 
 body::-webkit-scrollbar {
@@ -47,4 +52,12 @@ body {
     background-color: var(--pruhledna);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
+}
+
+.fajvka {
+    height: 40px;
+}
+
+.fajvkaMensi {
+    height: 32px;
 }

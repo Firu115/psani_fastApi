@@ -18,6 +18,7 @@ class JWTBearer(HTTPBearer):
                 raise HTTPException(status_code=403, detail="Invalid token or expired token.")
             return credentials.credentials
         else:
+            return None # ehm tohle je aby šlo udělat dobrovolný přihlaseni v lekcich
             raise HTTPException(status_code=403, detail="Invalid authorization code.")
 
     def verify_jwt(self, jwtoken: str) -> bool:

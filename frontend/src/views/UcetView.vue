@@ -19,7 +19,7 @@ export default {
     },
     mounted() {
         axios
-            .get('/ja', {
+            .get('api/ja', {
                 headers: {
                     Authorization: 'Bearer ' + this.ls.getItem('token').value
                 }
@@ -27,13 +27,20 @@ export default {
             .then(response => {
                 this.info = response.data
             })
+            .catch(function (e) { //nebudeš tam chodit nemas ucet more
+                router.push("/")
+            })
     }
 }
 </script>
 
 <template>
-    <h1>{{ this.info.jmeno }}</h1>
-    <h2>{{ this.info.email }}</h2>
+    <h1>{{ info.jmeno }}</h1>
+    <h2>{{ info.email }}</h2>
+    <h2>Dokonceno: {{ info.dokonceno }}%</h2>
+    <h2>Rychlost: {{ info.prumerna_rychlost }}%</h2>
+    <h2>Přesnost: {{ info.prumerna_presnost }}%</h2>
+
     <button @click="odhlasit">Odhlásit</button>
 </template>
 

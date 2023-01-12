@@ -25,7 +25,7 @@ export default {
             if (this.spatnej_email || this.spatny_heslo || this.spatny_jmeno) return;
 
             axios
-                .post('/registrace', {
+                .post('api/registrace', {
                     "jmeno": this.jmeno,
                     "email": this.email,
                     "heslo": this.heslo

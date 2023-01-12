@@ -23,7 +23,7 @@ class UserLoginSchema(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "jmeno_nebo_email": "joe@xyz.com",
-                "heslo": "ne"
+                "jmeno_nebo_email": "firu",
+                "heslo": "Filipheslo1*"
             }
         }

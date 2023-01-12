@@ -49,6 +49,8 @@ export default {
         </nav>
     </header>
 
+    <img id="pavouk" src="@/assets/icony/pavouk.png" alt="Pavouk">
+
     <div id="kontent">
         <RouterView/>
     </div>
@@ -58,12 +60,23 @@ export default {
 <style scoped>
 @import '@/assets/main.css';
 
+#pavouk {
+    position: absolute;
+    left: 120px;
+    width: 100px;
+    pointer-events: none;
+}
+
 #kontent {
     padding-top: 20px;
     margin-left: var(--sirka-menu);
     height: 100%;
     margin-bottom: 50px;
     text-align: center;
+    width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 nav {
@@ -82,19 +95,17 @@ nav a {
     padding: 15px;
     text-decoration: none;
     cursor: pointer;
-    animation: ease-in 0.2s;
-
 }
 
 nav a:hover {
-    color: var(--bila);
     backdrop-filter: blur(30px);
     -webkit-backdrop-filter: blur(30px);
+    background-color: var(--mene-pruhledna);
     border-radius: 8px;
     margin: 5px;
     padding: 10px;
     width: calc(var(--sirka-menu) - 10px);
-    animation: ease-in 0.2s;
+    transition: background-color 0.2s, backdrop-filter 0.2s;
 }
 
 .dot {
